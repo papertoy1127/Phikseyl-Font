@@ -35,6 +35,8 @@ consonant_map = {
 
 class GlyphConsonant:
     def __init__(self):
+        self.single = None
+
         # 초성
         self.pri_left = None
         self.pri_up = None
@@ -85,6 +87,7 @@ class GlyphConsonant:
 
 class GlyphVowel:
     def __init__(self):
+        self.single = None
         self.primary = None
         self.secondary = None
         self.offset = 0
@@ -127,6 +130,8 @@ def load_consonant(letter):
     cons.sec_up_double = glyph_of(n, 11)
     cons.sec_left_up_double = glyph_of(n, 12)
     cons.fin_double = glyph_of(n, 13)
+
+    cons.single = glyph_of(n, 14)
     return cons
 
 def load_vowel(letter):
@@ -141,6 +146,7 @@ def load_vowel(letter):
     n = vowels.find(letter) + 14
     vowl.primary = glyph_of(n, 0)
     vowl.secondary = glyph_of(n, 1)
+    vowl.single = glyph_of(n, 14)
 
     vowl.offset = offset
     vowl.group = group
@@ -240,6 +246,7 @@ def get_all():
     if os.path.exists('./font'):
         shutil.rmtree('./font')
     os.mkdir('./font')
+
     a = 0xAC00
     b = 0xAC
     x = 0xD7A4
@@ -259,12 +266,10 @@ def get_all():
         b += 1
 
 if __name__ == '__main__':
-    #get_all()
+    get_all()
     base1 = get_string("픽세일")
     base2 = np.concatenate((get_string("폰트"), np.zeros((16, 16, 4), dtype=np.uint8)), axis=1)
     base3 = get_string("리소스")
-
-    cv2.imwrite(f'thumbnail.png', np.concatenate((base1, base2, base3), axis=0))
 
     cv2.imshow("asdf", cv2.resize(base2, (2 * 128, 128), interpolation=cv2.INTER_AREA))
     cv2.waitKey(0)
